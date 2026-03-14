@@ -53,6 +53,9 @@ export default [
       'no-console': 'off',
       eqeqeq: ['error', 'always'],
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+
+      // Props
+      'react/prop-types': 'off',
     },
   },
 ];
