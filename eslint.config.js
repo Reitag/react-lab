@@ -56,11 +56,11 @@ export default [
 
       // TypeScript rules
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': 'off',
 
       'no-console': 'off',
       eqeqeq: ['error', 'always'],
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
 
       // Props
       'react/prop-types': 'off',

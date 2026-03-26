@@ -16,5 +16,5 @@
     "allowImportingTsExtensions": true
   },
   "files": [],
-  "references": [{ "path": "./apps/todo" }]
+  "references": [{ "path": "./apps/02-cart" }]
 }

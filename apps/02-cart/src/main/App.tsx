@@ -1,5 +1,15 @@
 import { JSX } from 'react';
+import { CartProvider } from '@/components/CartProvider';
+import { ProductList } from '@/components/ProductList';
+import { Header } from '@/components/Header';
+import { Cart } from '@/components/Cart';
 
 export default function App(): JSX.Element {
-  return <main></main>;
+  return (
+    <CartProvider>
+      <Header />
+      <ProductList />
+      <Cart />
+    </CartProvider>
+  );
 }
