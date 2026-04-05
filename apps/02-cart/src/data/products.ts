@@ -6,4 +6,4 @@ export const products: CartItem[] = [
   { id: 3, title: 'Microwave' },
   { id: 4, title: 'TV' },
   { id: 5, title: 'Vacuum cleaner' },
-] as const;
+];
