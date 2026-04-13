@@ -12,10 +12,14 @@ import { JSX } from 'react';
 type Props = {
   // title: string | undefined;
   title?: string;
-}
+};
 
 export const Header: React.FC<Props> = (props) => {
-// export function Header(): ReturnType<React.FC> {
+  // export function Header(): ReturnType<React.FC> {
   const { items } = useCart();
-  return <header>Items in Cart: {items.length} {props.title}</header>;
-}
+  return (
+    <header>
+      Items in Cart: {items.length} {props.title}
+    </header>
+  );
+};

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "composite": true,
     "declaration": true,
     "target": "ESNext",
@@ -16,5 +17,5 @@
     "allowImportingTsExtensions": true
   },
   "files": [],
-  "references": [{ "path": "./apps/02-cart" }]
+  "references": [{ "path": ["./apps/02-cart", "./apps/03-notofocation"] }]
 }

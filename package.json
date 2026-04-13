@@ -10,6 +10,7 @@
   "scripts": {
     "todo:dev": "npm run dev -w 01-todo",
     "cart:dev": "npm run dev -w 02-cart",
+    "notification:dev": "npm run dev -w 03-notification",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
