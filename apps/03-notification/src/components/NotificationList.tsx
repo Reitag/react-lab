@@ -2,42 +2,64 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { NotificationItem } from './NotificationItem';
 import { useState } from 'react';
 
+import { v4 as uuidv4 } from 'uuid';
+
 interface NotificationFormState {
-  message: string;
+  message: string | undefined;
   autoClose: number | undefined;
 }
 
+/** null vs undefined */
+/** undefined - используется с переменной, которой не присвоили значение */
+
+const a; // undefined, значения нет
+
+/** null - используется с переменной, которой намеренно присвоили значение null */
+
+const b = null; // null, значение есть
+
 export function NotificationList(): React.ReactNode {
-  const [value, setValue] = useState<NotificationFormState>({ message: '', autoClose: undefined });
+  const [notification, setNotification] = useState<NotificationFormState>({
+    message: undefined,
+    autoClose: undefined,
+  });
   const { state, addNotification, clearAll } = useNotifications();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value: inputValue } = event.target;
-
-    setValue((prev) => ({
-      ...prev,
-      [id === 'notification-msg' ? 'message' : 'autoClose']:
-        id === 'notification-time' ? (inputValue ? Number(inputValue) : undefined) : inputValue,
-    }));
+  const handleChange = (field: keyof NotificationFormState, value: number | string) => {
+    setNotification((notification) => ({ ...notification, [field]: value }));
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (value.message.trim()) {
-      addNotification({
-        type: 'info',
-        message: value.message,
-        autoClose: value.autoClose,
-      });
-      setValue({ message: '', autoClose: undefined });
+
+    /** early return (DX) */
+    if (!notification?.message?.trim()) {
+      return;
     }
+
+    addNotification(
+      {
+        id: uuidv4(),
+        type: 'info',
+        message: notification.message,
+      },
+      notification.autoClose
+    );
+
+    /** DX */
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setNotification({ message: undefined, autoClose: undefined });
   };
 
   return (
     <div style={{ padding: '20px', maxWidth: '400px' }}>
+      {/* <NotificationForm /> */}
       <form
         onSubmit={handleSubmit}
-        style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
+        style={{ display: 'flex', flexDirection: 'column', gap: 'f15px' }}
       >
         {/* Message */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
@@ -45,8 +67,8 @@ export function NotificationList(): React.ReactNode {
           <input
             type="text"
             id="notification-msg"
-            value={value.message}
-            onChange={handleChange}
+            value={notification.message}
+            onChange={(e) => handleChange('message', e.target.value)}
             style={{ padding: '8px' }}
           />
         </div>
@@ -57,8 +79,8 @@ export function NotificationList(): React.ReactNode {
           <input
             type="number"
             id="notification-time"
-            value={value.autoClose ?? ''}
-            onChange={handleChange}
+            value={notification.autoClose ?? ''}
+            onChange={(e) => handleChange('autoClose', Number(e.target.value) || 0)}
             style={{ padding: '8px' }}
             placeholder="Необязательно"
           />
@@ -77,13 +99,8 @@ export function NotificationList(): React.ReactNode {
       </div>
 
       <div style={{ marginTop: '15px' }}>
-        {state.notifications.map((item) => (
-          <div
-            key={item.id}
-            style={{ marginBottom: '10px', borderLeft: '3px solid blue', paddingLeft: '10px' }}
-          >
-            <NotificationItem id={item.id} message={item.message} />
-          </div>
+        {state.notifications.map((notification) => (
+          <NotificationItem key={notification.id} notification={notification} />
         ))}
       </div>
     </div>

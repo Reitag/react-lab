@@ -12,11 +12,7 @@ export type State = {
 
 export interface NotificationContextConfig {
   state: State;
-  addNotification: (args: {
-    type: 'success' | 'error' | 'info';
-    message: string;
-    autoClose?: number;
-  }) => void;
+  addNotification: (notification: Notification, autoClose?: number) => void;
   removeNotification: (id: string) => void;
   clearAll: () => void;
 }

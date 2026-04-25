@@ -1,18 +1,22 @@
 import { useNotifications } from '@/hooks/useNotifications';
 
 type Props = {
-  id: string;
-  message: string;
+  notification: {
+    id: string;
+    message: string;
+  };
 };
 
 export function NotificationItem(props: Props): React.ReactNode {
   const { removeNotification } = useNotifications();
-  const { id, message } = props;
+  const { notification } = props;
 
   return (
-    <div key={id} style={{ display: 'flex', padding: '10px' }}>
-      <div style={{ width: '200px' }}>{message}</div>
-      <button onClick={() => removeNotification(id)}>Remove</button>
+    <div style={{ marginBottom: '10px', borderLeft: '3px solid blue', paddingLeft: '10px' }}>
+      <div style={{ display: 'flex', padding: '10px' }}>
+        <div style={{ width: '200px' }}>{notification.message}</div>
+        <button onClick={() => removeNotification(notification.id)}>Remove</button>
+      </div>
     </div>
   );
 }

@@ -20,11 +20,14 @@ type Action =
 function notificationReducer(state: State, action: Action): State {
   switch (action.type) {
     case ActionTypes.add:
-      return { notifications: [...state.notifications, action.payload] };
+      return { ...state, notifications: [...state.notifications, action.payload] };
     case ActionTypes.remove:
-      return { notifications: state.notifications.filter((elem) => elem.id !== action.payload.id) };
+      return {
+        ...state,
+        notifications: state.notifications.filter((elem) => elem.id !== action.payload.id),
+      };
     case ActionTypes.clear:
-      return { notifications: [] };
+      return { ...state, notifications: [] };
     default:
       return state;
   }
@@ -34,26 +37,16 @@ const initialState: State = {
   notifications: new Array<Notification>(),
 };
 
-const generateId = () => `${Date.now()}-${Math.random().toString(36)}`;
-
 export function NotificationProvider({ children }: { children: React.ReactNode }): React.ReactNode {
   const [state, dispatch] = useReducer(notificationReducer, initialState);
 
-  const addNotification = (args: {
-    type: 'success' | 'error' | 'info';
-    message: string;
-    autoClose?: number;
-  }) => {
-    const id = crypto.randomUUID() ?? generateId();
-    dispatch({
-      type: ActionTypes.add,
-      payload: { id: id, type: args.type, message: args.message },
-    });
+  const addNotification = (notification: Notification, autoClose?: number) => {
+    dispatch({ type: ActionTypes.add, payload: notification });
 
-    if (args.autoClose) {
+    if (autoClose && autoClose > 0) {
       setTimeout(() => {
-        removeNotification(id);
-      }, args.autoClose);
+        removeNotification(notification.id);
+      }, autoClose * 1000);
     }
   };
 
